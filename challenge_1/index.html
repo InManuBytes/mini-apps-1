@@ -7,35 +7,64 @@
     <style>
       html, body {
         height: 100%;
-        width: 100%;
       }
-      .boardContainer {
+      .board {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: 100%
+        height: 100%;
       }
       .box {
-        width: 300px;
-        height: 300px;
-      }
-      #top_L {
+        width: 150px;
+        height: 150px;
+        border: solid;
+        border-width:4px;
+        border-color: white;
+        background: teal;
       }
     </style>
   </head>
   <body>
-    The Tic Tac Toe board goes here. We can represent it with a table using
-    flexbox.
     <div class="board">
-      <div class="box" id="top_L">1</div>
-      <div class="box">2</div>
-      <div class="box">3</div>
-      <div class="box">4</div>
-      <div class="box">5</div>
-      <div class="box">6</div>
-      <div class="box">7</div>
-      <div class="box">8</div>
-      <div class="box">9</div>
+      <h1>
+        TIC TAC TOE
+      </h1>
+      <table>
+        <tr>
+          <td>
+            <div class="box" id="top_L">1</div>
+          </td>
+          <td>
+              <div class="box" id="top_L">2</div>
+          </td>
+          <td>
+              <div class="box" id="top_L">3</div>
+          </td>
+        </tr>
+        <tr>
+            <td>
+              <div class="box" id="top_L">1</div>
+            </td>
+            <td>
+                <div class="box" id="top_L">2</div>
+            </td>
+            <td>
+                <div class="box" id="top_L">3</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <div class="box" id="top_L">1</div>
+            </td>
+            <td>
+                <div class="box" id="top_L">2</div>
+            </td>
+            <td>
+                <div class="box" id="top_L">3</div>
+            </td>
+        </tr>
+      </table>
     </div>
   </body>
 </html>
