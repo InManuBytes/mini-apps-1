@@ -1,8 +1,4 @@
 let doc = window.document;
-HTMLDocument.prototype.Sel = function(selector) {
-  // Only for HTML
-  return this.querySelector(selector);
-};
 
 var App = {
   init: () => {
@@ -35,13 +31,25 @@ var BoardView = {
     });
   },
   makePlay: (cell) => {
-    cell.innerHTML = "X";
+    cell.innerHTML = BoardView.toggleTurn();
+  },
+  turn: '',
+  toggleTurn: () => {
+    if (BoardView.turn === 'O' || BoardView.turn === "") {
+      BoardView.turn = 'X';
+    } else {
+      BoardView.turn = 'O';
+    }
+    return BoardView.turn;
   }
 };
 
 var Board = {
-  state: [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+  // state represented by matrix: [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
   init: () => {
+
+  },
+  reset: () => {
 
   }
 }
