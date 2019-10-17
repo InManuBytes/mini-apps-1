@@ -10,6 +10,7 @@ var BoardView = {
   init: () => {
     BoardView.clearBoard();
     BoardView.readyPlay();
+    BoardView.turn = '';
   },
   onBoard: callback => {
     // the reference to this.table seems problematic
@@ -53,3 +54,4 @@ var Board = {
 
   }
 }
+// make a button appear when game is over that says "play again"
