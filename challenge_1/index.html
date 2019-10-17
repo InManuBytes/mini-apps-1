@@ -22,9 +22,12 @@
         border-width:4px;
         border-color: white;
         background: teal;
+        font-size: 800%;
+        text-align: center;
+        color: white;
       }
     </style>
-    <script src="./app.js"></script>
+    <script src="app.js"></script>
   </head>
   <body>
     <div class="board">
@@ -33,13 +36,13 @@
           TIC TAC TOE
         </h1>
       </header>
-      <table>
+      <table id="table">
         <tr>
           <td>
-            <div class="box" id="1">1</div>
+            <div class="box" id="1">x</div>
           </td>
           <td>
-              <div class="box" id="2">2</div>
+              <div class="box" id="2">o</div>
           </td>
           <td>
               <div class="box" id="3">3</div>
@@ -69,5 +72,10 @@
         </tr>
       </table>
     </div>
+    <script>
+      window.onload = () => {
+        App.init();
+      }
+    </script>
   </body>
 </html>
