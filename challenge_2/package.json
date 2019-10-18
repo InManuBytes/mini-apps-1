@@ -1,0 +1,23 @@
+{
+  "name": "challenge_2",
+  "version": "1.0.0",
+  "description": "generates CSV reports from JSON data",
+  "main": "app.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manuelag19/rpt17-mini-apps-1/tree/master/challenge_2"
+  },
+  "keywords": [
+    "CSV",
+    "JSON"
+  ],
+  "author": "Manu",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
