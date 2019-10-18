@@ -62,7 +62,8 @@ var Board = {
         var winner = Board.player();
         alert(winner + ' Wins!');
       } else if (Board.turns === 9) {
-        alert('DRAW');
+        alert('Game Over, Play Again?');
+        Board.reset();
       }
       // check if draw
     }
