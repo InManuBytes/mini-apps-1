@@ -11,18 +11,18 @@ var BoardView = {
     Board.init();
     BoardView.render();
     BoardView.readyPlay();
-    // without MVC
-    // BoardView.clearBoard();
-    // BoardView.turn = '';
   },
-  render: () => {
+  render: (winner) => {
     // translate a state to a view
     Board.state.forEach((row, rowIdx) => {
       row.forEach((play, colIdx) => {
         var selector = rowIdx.toString() + colIdx.toString();
         var cell = doc.getElementById(selector);
         cell.innerHTML = play;
-        //console.log('Rendering cell', cell, ' with', play)
+        if (winner) {
+          // add class
+          console.log('Attributes', cell.attributes);
+        }
       });
     });
   },
@@ -31,17 +31,11 @@ var BoardView = {
     cells.forEach( cell => {
       cell.addEventListener("click", event => {
         Board.makePlay(cell);
-        BoardView.render();
-        if (Board.winner) {
-
-        }
-        // console.log(Board.state);
+        BoardView.render(BoardView.winner);
       });
     });
   },
-  renderWinner: () => {
-
-  }
+  winner: false
 };
 
 var Board = {
@@ -53,6 +47,7 @@ var Board = {
   reset: () => {
     // we can later replace this with a function
     Board.state = [['', '', ''], ['', '', ''], ['', '', '']];
+    Board.turns = 0;
   },
   makePlay: cell => {
     var index = cell.attributes.id.nodeValue;
@@ -63,20 +58,27 @@ var Board = {
       Board.state[i][j] = Board.toggleTurn();
       // check if there are winners
       if (Board.checkWinAt(i,j)) {
-        alert('Winner', Board.turn);
+        BoardView.winner = true;
+        var winner = Board.player();
+        alert(winner + ' Wins!');
+      } else if (Board.turns === 9) {
+        alert('DRAW');
       }
       // check if draw
     }
   },
-  turn: "",
+  turns: 0,
   toggleTurn: () => {
     // make sure the first turn is X
-    if (Board.turn === "O" || Board.turn === "") {
-      Board.turn = "X";
+    Board.turns++;
+    return Board.player();
+  },
+  player: () => {
+    if (Board.turns === 0 || Board.turns % 2 === 0) {
+      return 'O';
     } else {
-      Board.turn = "O";
+      return 'X';
     }
-    return Board.turn;
   },
   countPlays: 0,
   checkWin: () => {
@@ -97,7 +99,7 @@ var Board = {
   },
   checkHorizontalWinAt: (rowIdx) => {
     Board.state[rowIdx].forEach((play) => {
-      if (play === Board.turn) {
+      if (play === Board.player()) {
         Board.countPlays++;
       }
     });
@@ -107,7 +109,7 @@ var Board = {
     Board.state.forEach(row => {
       row.forEach((play, index) => {
         if (index === colIdx) {
-          if (play === Board.turn) {
+          if (play === Board.player()) {
             Board.countPlays++;
           }
         }
