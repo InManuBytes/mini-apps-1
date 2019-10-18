@@ -119,9 +119,17 @@ var Board = {
     });
     return Board.checkWin();
   },
+  // Diagonal wins only occur at i,j: (0,0), (0,2), (2,0), (2,2), (1,1)
+  //
   checkDiagonalWinAt: (rowIdx, colIdx) => {
-    if (rowIdx === colIdx) {
-
+    var play = Board.state[rowIdx][colIdx];
+    if (rowIdx === colIdx || (rowIdx % 2 === 0 && colIdx % 2 === 0)) {
+      if (play === Board.state[1][1]) {
+        Board.countPlays++;
+        if ((play === Board.state[0][0] && play === Board.state[2][2]) || (play === Board.state[0][2] && play === Board.state[2][0])) {
+          Board.countPlays+=2;
+        }
+      }
       return Board.checkWin();
     } else {
       return false;
