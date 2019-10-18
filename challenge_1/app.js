@@ -8,6 +8,7 @@ var App = {
 
 var BoardView = {
   init: () => {
+    BoardView.winner = false;
     Board.init();
     BoardView.render();
     BoardView.readyPlay();
@@ -19,12 +20,11 @@ var BoardView = {
         var selector = rowIdx.toString() + colIdx.toString();
         var cell = doc.getElementById(selector);
         cell.innerHTML = play;
-        if (winner) {
-          // add class
-          console.log('Attributes', cell.attributes);
-        }
       });
     });
+    if (winner) {
+      BoardView.renderButton();
+    }
   },
   readyPlay: () => {
     cells = this.table.querySelectorAll('div.box');
@@ -35,7 +35,18 @@ var BoardView = {
       });
     });
   },
-  winner: false
+  winner: false,
+  renderButton: () => {
+    var button = doc.getElementById('reset');
+      button.removeAttribute('hidden');
+      button.addEventListener('click', event => {
+        BoardView.init();
+        BoardView.removeButton();
+      });
+  },
+  removeButton: () => {
+    doc.getElementById('reset').setAttribute('hidden','true');
+  }
 };
 
 var Board = {
@@ -62,10 +73,8 @@ var Board = {
         var winner = Board.player();
         alert(winner + ' Wins!');
       } else if (Board.turns === 9) {
-        alert('Game Over, Play Again?');
-        Board.reset();
+        alert('Game Over. No winner');
       }
-      // check if draw
     }
   },
   turns: 0,

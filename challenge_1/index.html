@@ -2,10 +2,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>Manu's Tic Tac Toe</title>
     <style>
-      html, body {
+      html,
+      body {
         height: 100%;
       }
       .board {
@@ -19,63 +20,78 @@
         width: 150px;
         height: 150px;
         border: solid;
-        border-width:4px;
+        border-width: 4px;
         border-color: white;
         background: teal;
         font-size: 800%;
         text-align: center;
         color: white;
       }
+      button {
+        background-color: rgb(255, 208, 0);
+        font-size: 150%;
+        border-width: 0px;
+        padding: 10px;
+        width: 30%;
+      }
+      active {
+
+      }
     </style>
     <script src="app.js"></script>
   </head>
   <body>
     <div class="board" id="board">
-      <header>
-        <h1>
-          TIC TAC TOE
-        </h1>
-      </header>
+      <div>
+        <header>
+          <h1>
+            TIC TAC TOE
+          </h1>
+        </header>
+      </div>
       <table id="table">
         <tr>
           <td>
             <div class="box" id="00"></div>
           </td>
           <td>
-              <div class="box" id="01"></div>
+            <div class="box" id="01"></div>
           </td>
           <td>
-              <div class="box" id="02"></div>
+            <div class="box" id="02"></div>
           </td>
         </tr>
         <tr>
-            <td>
-              <div class="box" id="10"></div>
-            </td>
-            <td>
-                <div class="box" id="11"></div>
-            </td>
-            <td>
-                <div class="box" id="12"></div>
-            </td>
+          <td>
+            <div class="box" id="10"></div>
+          </td>
+          <td>
+            <div class="box" id="11"></div>
+          </td>
+          <td>
+            <div class="box" id="12"></div>
+          </td>
         </tr>
         <tr>
-            <td>
-              <div class="box" id="20"></div>
-            </td>
-            <td>
-                <div class="box" id="21"></div>
-            </td>
-            <td>
-                <div class="box" id="22"></div>
-            </td>
+          <td>
+            <div class="box" id="20"></div>
+          </td>
+          <td>
+            <div class="box" id="21"></div>
+          </td>
+          <td>
+            <div class="box" id="22"></div>
+          </td>
         </tr>
       </table>
+      <button hidden="true" id="reset">
+        Play Again
+      </button>
     </div>
     <script>
       window.onload = () => {
         App.init();
-      }
+      };
     </script>
   </body>
 </html>
