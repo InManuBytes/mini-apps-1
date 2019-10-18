@@ -8,50 +8,62 @@ var App = {
 
 var BoardView = {
   init: () => {
-    BoardView.clearBoard();
+    Board.init();
+    BoardView.render();
     BoardView.readyPlay();
-    BoardView.turn = '';
+    // without MVC
+    // BoardView.clearBoard();
+    // BoardView.turn = '';
   },
-  onBoard: callback => {
-    // the reference to this.table seems problematic
-    var cells = this.table.querySelectorAll("div.box");
-    cells.forEach(cell => {
-      callback(cell);
-    });
-  },
-  clearBoard: () => {
-    BoardView.onBoard(cell => {
-      cell.innerHTML = "";
-    });
-  },
-  readyPlay: () => {
-    BoardView.onBoard(cell => {
-      cell.addEventListener("click", event => {
-        BoardView.makePlay(cell);
+  render: () => {
+    // translate a state to a view
+    Board.state.forEach((row, rowIdx) => {
+      row.forEach((play, colIdx) => {
+        var selector = rowIdx.toString() + colIdx.toString();
+        var cell = doc.getElementById(selector);
+        cell.innerHTML = play;
+        //console.log('Rendering cell', cell, ' with', play)
       });
     });
   },
-  makePlay: (cell) => {
-    cell.innerHTML = BoardView.toggleTurn();
-  },
-  turn: '',
-  toggleTurn: () => {
-    if (BoardView.turn === 'O' || BoardView.turn === "") {
-      BoardView.turn = 'X';
-    } else {
-      BoardView.turn = 'O';
-    }
-    return BoardView.turn;
+  readyPlay: () => {
+    cells = this.table.querySelectorAll('div.box');
+    cells.forEach( cell => {
+      cell.addEventListener("click", event => {
+        Board.makePlay(cell);
+        BoardView.render();
+        console.log(Board.state);
+      });
+    });
   }
 };
 
 var Board = {
-  // state represented by matrix: [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+  // state represented by matrix: [[X, O, ''], [X, X, ''], ['', X, '']],
+  state: [['', '', ''], ['', '', ''], ['', '', '']],
   init: () => {
-
+    Board.reset();
   },
   reset: () => {
+    // we can later replace this with a function
+    Board.state = [['', '', ''], ['', '', ''], ['', '', '']];
+  },
+  makePlay: cell => {
+    var index = cell.attributes.id.nodeValue;
+    var i = parseInt(index[0], 10);
+    var j = parseInt(index[1], 10);
 
+    Board.state[i][j] = Board.toggleTurn();
+  },
+  turn: "",
+  toggleTurn: () => {
+    // make sure the first turn is X
+    if (Board.turn === "O" || Board.turn === "") {
+      Board.turn = "X";
+    } else {
+      Board.turn = "O";
+    }
+    return Board.turn;
   }
-}
+};
 // make a button appear when game is over that says "play again"
