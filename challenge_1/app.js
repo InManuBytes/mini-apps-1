@@ -40,7 +40,7 @@ var BoardView = {
 
 var Board = {
   // state represented by matrix: [[X, O, ''], [X, X, ''], ['', X, '']],
-  state: [['', '', ''], ['', '', ''], ['', '', '']],
+  state: [],
   init: () => {
     Board.reset();
   },
@@ -52,8 +52,10 @@ var Board = {
     var index = cell.attributes.id.nodeValue;
     var i = parseInt(index[0], 10);
     var j = parseInt(index[1], 10);
-
-    Board.state[i][j] = Board.toggleTurn();
+    if (Board.state[i][j] === '') {
+      // could also do a visual thing to highlight the box
+      Board.state[i][j] = Board.toggleTurn();
+    }
   },
   turn: "",
   toggleTurn: () => {
