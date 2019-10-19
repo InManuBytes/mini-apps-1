@@ -1,6 +1,8 @@
 var express = require('express');
 var app = express();
+// middleware
 var bodyParser = require('body-parser');
+var ejs = require('ejs');
 
 app.listen(3000);
 
@@ -22,11 +24,31 @@ app.post('/json', (req, res, next) => {
   //   "children": []
   // }
   var json = JSON.parse(req.body.json);
-  var CSV = jsonToCSV(json);
-  console.log('CSV', CSV);
-  res.redirect('/');
+  var CSV = {report: jsonToCSV(json)};
+  var html = template(CSV);
+  res.send(html);
   next();
 });
+
+var template = ejs.compile(`
+  <div>
+    <div class="container">
+      <!-- form -->
+      <form action='json' method='post'>
+        <label for='json'>JSON FILE:</label>
+        <input id='json' type='text' name='json'>
+        <input type='submit' value='Convert'>
+      </form>
+      <!-- CSV REPORT -->
+      <div>
+        <h2>CSV Report</h2>
+        <div>
+          <%= report %>
+        <div>
+      </div>
+    </div>
+  </div>
+`)
 
 // function that will take a json object and flattens to csv
 var jsonToCSV = (json) => {
