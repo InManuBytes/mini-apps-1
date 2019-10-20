@@ -4,19 +4,24 @@ var app = express();
 // middleware and custom functions
 // http://expressjs.com/en/resources/middleware.html
 var bodyParser = require('body-parser');
-// we exported outour jasonToCSV function and moved it to a new folder
-// so if we also write other functions that we might need we can put them there
 var converter = require('./utils/jasonToCSV');
 
 // where to find our template files
 app.set('views', './client/views');
-// when we set it here, we no longer need to require it above
+// which engine to render them with
 app.set('view engine', 'ejs');
 
 app.listen(3000);
 
 app.use(express.static('client'));
 app.use(bodyParser.urlencoded({ extended: false }))
+
+// now we will no longer use the index.html file but instead serve
+// the get '/' request for the homepage
+app.get('/', (req,res, next) => {
+  res.render('index', {report: 'Upload a file or enter JSON text to start'});
+  next();
+});
 
 app.post('/json-text', (req, res, next) => {
   // because of the way we are sending our form through textarea
