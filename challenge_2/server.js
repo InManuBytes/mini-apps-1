@@ -1,9 +1,14 @@
 var express = require('express');
-var fs = require('fs');
 var app = express();
+
 // middleware
 var bodyParser = require('body-parser');
-var ejs = require('ejs');
+// var ejs = require('ejs');
+
+// where to find our template files
+app.set('views', './client/views');
+// when we set it here, we no longer need to require it above
+app.set('view engine', 'ejs');
 
 app.listen(3000);
 
@@ -26,31 +31,33 @@ app.post('/json-text', (req, res, next) => {
   // }
   var json = JSON.parse(req.body.jsontext);
   var CSV = {report: jsonToCSV(json)};
-  var html = template(CSV);
-  res.render('index');
-  //res.send(CSV);
+  // http://expressjs.com/en/5x/api.html#res.render
+  // res.render('view', localObject, callback)
+  res.render('index', CSV);
   next();
 });
 
-var template = ejs.compile(`
-  <div>
-    <div class="container">
-      <!-- form -->
-      <form action='json' method='post'>
-        <label for='json'>JSON FILE:</label>
-        <input id='json' type='text' name='json'>
-        <input type='submit' value='Convert'>
-      </form>
-      <!-- CSV REPORT -->
-      <div>
-        <h2>CSV Report</h2>
-        <pre>
-          <%= report %>
-        <pre>
-      </div>
-    </div>
-  </div>
-`)
+// instead of using a template function, we'll use separate files in the views folder
+// and serve them through get requests
+// var template = ejs.compile(`
+//   <div>
+//     <div class="container">
+//       <!-- form -->
+//       <form action='json' method='post'>
+//         <label for='json'>JSON FILE:</label>
+//         <input id='json' type='text' name='json'>
+//         <input type='submit' value='Convert'>
+//       </form>
+//       <!-- CSV REPORT -->
+//       <div>
+//         <h2>CSV Report</h2>
+//         <pre>
+//           <%= report %>
+//         <pre>
+//       </div>
+//     </div>
+//   </div>
+// `)
 
 // function that will take a json object and flattens to csv
 var jsonToCSV = (json) => {
