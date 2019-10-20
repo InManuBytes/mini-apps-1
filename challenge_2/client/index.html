@@ -1,31 +1,102 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <style>
-      html, body {
+      html,
+      body {
+        font-family: sans-serif;
         height: 100%;
       }
       .container {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         height: 100%;
       }
+      .form_container {
+        height: 25%;
+      }
       form {
-        display: table-row;
+        height: 100%;
+        margin: 0 auto;
+      }
+      form label,
+      form button {
+        background-color: #7f9ccb;
+        padding: 5px 10px;
+        border-radius: 5px;
+        border: 1px ridge black;
+        font-size: 0.8rem;
+        height: auto;
+      }
+      form label:hover,
+      form button:hover {
+        background-color: #2d5ba3;
+        color: white;
+      }
+
+      form label:active,
+      form button:active {
+        background-color: #0d3f8f;
+        color: white;
+      }
+      .method {
+        padding: 25px;
       }
     </style>
-    <script src="/app.js"></script>
+    <title>JSON TO CSV CONVERTER</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="app.js"></script>
   </head>
   <body>
     <div class="container">
-      <!-- form -->
-      <form action='json' method='post'>
-        <label for='json'>JSON FILE:</label>
-        <input id='json' type='text' name='json'>
-        <input type='submit' value='Convert'>
-      </form>
+      <div>
+        <h1>JSON-CSV</h1>
+        <p>Convert JSON files to comma-separated values</p>
+      </div>
+      <div class="form_container">
+        <!-- file form -->
+        <form id="json-file-form" action="json-file" method="post">
+          <div class="inside_form">
+            <label id="label" for="json-file">UPLOAD A JSON FILE</label>
+            <input id="json-file" type='file' name="jsonfile" />
+          </div>
+          <div class="preview">
+            <p>No files currently selected for upload</p>
+          </div>
+          <button class="submit" hidden="true" type="submit" value="Convert">
+            Convert
+          </button>
+          <div class="method">
+            <a id="to-text" href="#">Input JSON text directly</a>
+          </div>
+        </form>
+        <form id="json-text-form" action="json-text" method="post">
+          <!-- text area -->
+          <div>
+            <p>INPUT JSON TEXT</p>
+            <input id="json-text" type="text" name="jsontext" accept=".json" />
+          </div>
+          <button class="submit" type="submit" value="Convert">
+              Convert
+            </button>
+            <div class="method">
+              <a id="to-file" href="#">Upload JSON file</a>
+            </div>
+        </form>
+      </div>
+      <div>
+        <h1 id="csv-title">CSV Report</h1>
+        <!-- CSV report -->
+        <div id="csv-report">
+          <pre></pre>
+        </div>
+      </div>
     </div>
+    <script>
+      $(() => App.initialize());
+    </script>
   </body>
 </html>

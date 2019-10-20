@@ -1,4 +1,5 @@
 var express = require('express');
+var fs = require('fs');
 var app = express();
 // middleware
 var bodyParser = require('body-parser');
@@ -9,7 +10,7 @@ app.listen(3000);
 app.use(express.static('client'));
 app.use(bodyParser.urlencoded({ extended: false }))
 
-app.post('/json', (req, res, next) => {
+app.post('/json-text', (req, res, next) => {
   // because of the way we are sending our form
   // it will come in {json: 'data'}
   // so we can access it with req.body.json
@@ -23,10 +24,11 @@ app.post('/json', (req, res, next) => {
   //   "sales": 1000000,
   //   "children": []
   // }
-  var json = JSON.parse(req.body.json);
+  var json = JSON.parse(req.body.jsontext);
   var CSV = {report: jsonToCSV(json)};
   var html = template(CSV);
-  res.send(html);
+  res.render('index');
+  //res.send(CSV);
   next();
 });
 
@@ -42,9 +44,9 @@ var template = ejs.compile(`
       <!-- CSV REPORT -->
       <div>
         <h2>CSV Report</h2>
-        <div>
+        <pre>
           <%= report %>
-        <div>
+        <pre>
       </div>
     </div>
   </div>

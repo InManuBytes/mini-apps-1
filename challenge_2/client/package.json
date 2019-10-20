@@ -1,0 +1,14 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "description": "front-end to JSON to CSV converter",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Manu",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^3.4.1"
+  }
+}
