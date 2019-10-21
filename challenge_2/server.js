@@ -39,23 +39,6 @@ app.post('/json-text', (req, res, next) => {
 });
 
 app.post('/json-file', upload.single('jsonfile'), (req, res, next) => {
-// console.log(req);
-// OUTPUT
-//   body: [Object: null prototype] {},
-//   route:
-//   Route {
-//     path: '/json-file',
-//     stack: [ [Layer], [Layer] ],
-//     methods: { post: true } },
-//  file:
-//   { fieldname: 'jsonfile',
-//     originalname: 'sales_report.json',
-//     encoding: '7bit',
-//     mimetype: 'application/json',
-//     buffer:
-//      <Buffer 7b 0a 20 20 20 20 22 66 69 72 73 74 4e 61 6d 65 22 3a 20 22 4a 6f 73 68 69 65 22 2c 0a 20 20 20 20 22 6c 61 73 74 4e 61 6d 65 22 3a 20 22 57 79 61 74 ... >,
-//     size: 1067 },
-//  __onFinished: null }
 // So the data is on req.file and it comes in 7bit encoding on a buffer
   var file = req.file;
   // We can use the node buf.toString([encoding[, start[, end]]])

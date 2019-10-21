@@ -51,6 +51,7 @@
     </style>
     <title>JSON TO CSV CONVERTER</title>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="server.js"></script>
     <script src="app.js"></script>
   </head>
   <body>
@@ -82,14 +83,23 @@
             <p>INPUT JSON TEXT</p>
             <input id="json-text" type="text" name="jsontext" accept=".json" />
           </div>
-          <button class="submit" type="submit" value="Convert">
-              Convert
-            </button>
-            <div class="method">
-              <a id="to-file" href="#">Upload JSON file</a>
-            </div>
+          <button id='default' class="submit" type="submit" value="Convert">
+            Convert
+          </button>
+          <div class="method">
+            <a id="to-file" href="#">Upload JSON file</a>
+          </div>
         </form>
       </div>
+      <div id='send-method'>
+          <p>Select a post method:</p>
+          <div>
+              <input type="radio" id="default" name="post-method" value="defualt" checked>
+              <label for="default">Default</label>
+              <input type="radio" id="ajax" name="post-method" value="ajax">
+              <label for="ajax">AJAX</label>
+          </div>
+        </div>
       <div class='report_container'>
         <h1 id="csv-title">CSV Report</h1>
         <!-- CSV report -->

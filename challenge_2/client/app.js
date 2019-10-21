@@ -13,9 +13,11 @@ var Form = {
     Form.postMethod();
     Form.input();
   },
-  submit: () => {
+  submit: (ajax) => {
     $('form').on('submit', (event) => {
-      event.preventDefault();
+      if (ajax) {
+        event.preventDefault();
+      }
     });
   },
   input: () => {
@@ -29,6 +31,14 @@ var Form = {
     toText.on('click', Form.jsonText);
     var toFile = $('#to-file');
     toFile.on('click', Form.jsonFile);
+    var sendMethod = $('#send-method');
+    sendMethod.change((event) => {
+      if (event.target.value === 'ajax') {
+        Form.submit(ajax);
+      } else {
+        Form.submit();
+      }
+    });
   },
   fileUploaded: () => {
     var preview = $('.preview');
