@@ -4,6 +4,8 @@ var app = express();
 // middleware and custom functions
 // http://expressjs.com/en/resources/middleware.html
 var bodyParser = require('body-parser');
+var multer = require('multer');
+var upload = multer();
 var converter = require('./utils/jasonToCSV');
 
 // where to find our template files
@@ -14,11 +16,12 @@ app.set('view engine', 'ejs');
 app.listen(3000);
 
 app.use(express.static('client'));
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // now we will no longer use the index.html file but instead serve
 // the get '/' request for the homepage
-app.get('/', (req,res, next) => {
+app.get('/', (req, res, next) => {
   res.render('index', {report: 'Upload a file or enter JSON text to start'});
   next();
 });
@@ -31,6 +34,36 @@ app.post('/json-text', (req, res, next) => {
   var CSV = {report: converter.jsonToCSV(json)};
   // http://expressjs.com/en/5x/api.html#res.render
   // res.render('view', localObject, callback)
+  res.render('index', CSV);
+  next();
+});
+
+app.post('/json-file', upload.single('jsonfile'), (req, res, next) => {
+// console.log(req);
+// OUTPUT
+//   body: [Object: null prototype] {},
+//   route:
+//   Route {
+//     path: '/json-file',
+//     stack: [ [Layer], [Layer] ],
+//     methods: { post: true } },
+//  file:
+//   { fieldname: 'jsonfile',
+//     originalname: 'sales_report.json',
+//     encoding: '7bit',
+//     mimetype: 'application/json',
+//     buffer:
+//      <Buffer 7b 0a 20 20 20 20 22 66 69 72 73 74 4e 61 6d 65 22 3a 20 22 4a 6f 73 68 69 65 22 2c 0a 20 20 20 20 22 6c 61 73 74 4e 61 6d 65 22 3a 20 22 57 79 61 74 ... >,
+//     size: 1067 },
+//  __onFinished: null }
+// So the data is on req.file and it comes in 7bit encoding on a buffer
+  var file = req.file;
+  // We can use the node buf.toString([encoding[, start[, end]]])
+  // ABOUT ENCODINGS:
+  // https://nodejs.org/docs/latest-v10.x/api/buffer.html#buffer_buffers_and_character_encodings
+  // Experimental function: https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder/decode
+  var json = JSON.parse(file.buffer.toString('ascii'));
+  var CSV = {report: converter.jsonToCSV(json)};
   res.render('index', CSV);
   next();
 });

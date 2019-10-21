@@ -16,7 +16,6 @@ var Form = {
   submit: () => {
     $('form').on('submit', (event) => {
       event.preventDefault();
-      App.init();
     });
   },
   input: () => {

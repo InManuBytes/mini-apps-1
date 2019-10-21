@@ -18,6 +18,9 @@
       .form_container {
         height: 25%;
       }
+      #csv-report {
+        border: solid 2px;
+      }
       form {
         height: 100%;
         margin: 0 auto;
@@ -58,7 +61,7 @@
       </div>
       <div class="form_container">
         <!-- file form -->
-        <form id="json-file-form" action="json-file" method="post">
+        <form id="json-file-form" action="json-file" method="post" enctype="multipart/form-data">
           <div class="inside_form">
             <label id="label" for="json-file">UPLOAD A JSON FILE</label>
             <input id="json-file" type='file' name="jsonfile" />
@@ -87,13 +90,13 @@
             </div>
         </form>
       </div>
-      <div>
+      <div class='report_container'>
         <h1 id="csv-title">CSV Report</h1>
         <!-- CSV report -->
         <div id="csv-report">
             <pre>
                 <%= report %>
-              <pre>
+            <pre>
         </div>
       </div>
     </div>
