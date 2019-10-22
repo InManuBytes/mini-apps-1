@@ -19,14 +19,18 @@ var Form = {
     form.on('submit', (event) => {
       if (Form.submitMethod === 'ajax') {
         if (Form.method === 'file') {
+          console.log('form submitted using ajax');
           var file = $('#json-file')[0].files[0];
           // TO-DO: how to let the user download
-          Server.uploadFile(file, Form.renderCSVReport);
+          Server.uploadFile(file, CSVReport.render);
         } else {
-          Server.sendText(text);
+          Server.sendText(text, CSVReport.render);
         }
         event.preventDefault();
+      } else {
+        CSVReport.hasReport = true;
       }
+      $('.submit').hide();
     });
   },
   input: () => {
@@ -82,10 +86,36 @@ var Form = {
     Form.method = 'file';
     $('#json-text-form').hide();
     $('#json-file-form').show();
-  },
-  renderCSVReport: ({report}) => {
-    $('#csv-report').empty();
-    $('#csv-report').append(report);
   }
 }
 
+var CSVReport = {
+  render: ({report, download}) => {
+    $('#csv-report').empty();
+    $('#csv-report').append(report);
+    CSVReport.renderButton(download);
+    CSVReport.downloadReady();
+  },
+  downloadReady: () => {
+    console.log('download ready');
+    $('.download button').on('click', (event) => {
+      console.log('getting report');
+      Server.getReport(CSVReport.downloadReport);
+    });
+  },
+  renderButton: (html) => {
+    var CSV = $('#csv-container');
+    CSV.addClass('download button');
+    CSV.append(html);
+  },
+  downloadReport: (fileData) => {
+    var file = new Blob([fileData], {type: 'text/plain'});
+    var dl = document.createElement('a');
+    dl.href = window.URL.createObjectURL(file);
+    dl.download = 'cvr_report.csv';
+    dl.style.display = 'none';
+    $('body').append(dl);
+    dl.click();
+    window.URL.revokeObjectURL(this.href);
+  }
+}

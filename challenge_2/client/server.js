@@ -24,5 +24,19 @@ var Server = {
       success: successCB,
       error: errorCB
     });
+  },
+  getReport: (successCB, errorCB) => {
+    $.ajax({
+      url: Server.address + '/csv',
+      type: 'GET',
+      contentType: 'application/json',
+      processData: false,
+      success: (data) => {
+        successCB(data);
+      },
+      error: () => {
+        console.log('error getting csv')
+      }
+    });
   }
 }

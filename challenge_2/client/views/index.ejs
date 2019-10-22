@@ -26,7 +26,8 @@
         margin: 0 auto;
       }
       form label,
-      form button {
+      form button,
+      .download button {
         background-color: #7f9ccb;
         padding: 5px 10px;
         border-radius: 5px;
@@ -35,13 +36,15 @@
         height: auto;
       }
       form label:hover,
-      form button:hover {
+      form button:hover,
+      .download button:hover {
         background-color: #2d5ba3;
         color: white;
       }
 
       form label:active,
-      form button:active {
+      form button:active,
+      .download button:active {
         background-color: #0d3f8f;
         color: white;
       }
@@ -100,13 +103,16 @@
               <label for="ajax">AJAX</label>
           </div>
         </div>
-      <div>
+      <div id='csv-container'>
         <h1>CSV Report</h1>
         <!-- CSV report -->
         <div>
             <pre id="csv-report">
                 <%= report %>
             <pre>
+        </div>
+        <div id="download">
+          <%- download %>
         </div>
       </div>
     </div>
