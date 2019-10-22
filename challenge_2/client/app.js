@@ -83,8 +83,9 @@ var Form = {
     $('#json-text-form').hide();
     $('#json-file-form').show();
   },
-  renderCSVReport: (data) => {
-    console.log(data);
+  renderCSVReport: ({report}) => {
+    $('#csv-report').empty();
+    $('#csv-report').append(report);
   }
 }
 

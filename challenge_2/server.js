@@ -41,14 +41,20 @@ app.post('/json-text', (req, res, next) => {
 app.post('/json-file', upload.single('jsonfile'), (req, res, next) => {
 // So the data is on req.file and it comes in 7bit encoding on a buffer
   var file = req.file;
-  console.log(req);
   // We can use the node buf.toString([encoding[, start[, end]]])
   // ABOUT ENCODINGS:
   // https://nodejs.org/docs/latest-v10.x/api/buffer.html#buffer_buffers_and_character_encodings
   // Experimental function: https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder/decode
   var json = JSON.parse(file.buffer.toString('ascii'));
   var CSV = {report: converter.jsonToCSV(json)};
-  res.render('index', CSV);
-  //res.send(CSV);
+  // We can tell if it was sent with AJAX if we try
+  // req.headers['x-requested-with'] = 'XMLHttpRequest';
+  if (req.headers['x-requested-with'] === 'XMLHttpRequest') {
+    // we can send the data back and render with the app
+    res.send(CSV);
+  } else {
+    // or we can render it from a template
+    res.render('index', CSV);
+  }
   next();
 });
