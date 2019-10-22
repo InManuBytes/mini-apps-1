@@ -1,5 +1,4 @@
 var App = {
-  body: $('body'),
   initialize: () => {
     Form.init();
   }
@@ -14,8 +13,16 @@ var Form = {
     Form.input();
   },
   submit: (ajax) => {
-    $('form').on('submit', (event) => {
+    var form = $('form');
+    form.on('submit', (event) => {
       if (ajax) {
+        if (Form.method === 'file') {
+          var file = $('#json-file')[0].files[0];
+          // TO-DO: how to let the user download
+          Server.uploadFile(file);
+        } else {
+          Server.sendText(text);
+        }
         event.preventDefault();
       }
     });
@@ -65,10 +72,12 @@ var Form = {
     $('.submit').removeAttr('hidden');
   },
   jsonText: () => {
+    Form.method = 'text';
     $('#json-file-form').hide();
     $('#json-text-form').show();
   },
   jsonFile: () => {
+    Form.method = 'file';
     $('#json-text-form').hide();
     $('#json-file-form').show();
   }

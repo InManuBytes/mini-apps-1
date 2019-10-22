@@ -63,22 +63,22 @@
       <div class="form_container">
         <!-- file form -->
         <form id="json-file-form" action="json-file" method="post" enctype="multipart/form-data">
-          <div class="inside_form">
+          <div>
             <label id="label" for="json-file">UPLOAD A JSON FILE</label>
             <input id="json-file" type='file' name="jsonfile" />
           </div>
           <div class="preview">
             <p>No files currently selected for upload</p>
           </div>
-          <button class="submit" hidden="true" type="submit" value="Convert">
+          <button class="submit" hidden="true" type="submit">
             Convert
           </button>
           <div class="method">
             <a id="to-text" href="#">Input JSON text directly</a>
           </div>
         </form>
+        <!-- text area -->
         <form id="json-text-form" action="json-text" method="post">
-          <!-- text area -->
           <div>
             <p>INPUT JSON TEXT</p>
             <input id="json-text" type="text" name="jsontext" accept=".json" />
@@ -94,14 +94,14 @@
       <div id='send-method'>
           <p>Select a post method:</p>
           <div>
-              <input type="radio" id="default" name="post-method" value="defualt" checked>
+              <input type="radio" id="default" name="post-method" value="default" checked>
               <label for="default">Default</label>
               <input type="radio" id="ajax" name="post-method" value="ajax">
               <label for="ajax">AJAX</label>
           </div>
         </div>
-      <div class='report_container'>
-        <h1 id="csv-title">CSV Report</h1>
+      <div>
+        <h1>CSV Report</h1>
         <!-- CSV report -->
         <div id="csv-report">
             <pre>
