@@ -7,19 +7,21 @@ var Form = {
   init: () => {
     Form.eventHandlers();
     Form.jsonFile();
+    Form.submitMethod = 'default';
   },
   eventHandlers: () => {
     Form.postMethod();
     Form.input();
+    Form.submit();
   },
-  submit: (ajax) => {
+  submit: () => {
     var form = $('form');
     form.on('submit', (event) => {
-      if (ajax) {
+      if (Form.submitMethod === 'ajax') {
         if (Form.method === 'file') {
           var file = $('#json-file')[0].files[0];
           // TO-DO: how to let the user download
-          Server.uploadFile(file);
+          Server.uploadFile(file, Form.renderCSVReport);
         } else {
           Server.sendText(text);
         }
@@ -41,9 +43,9 @@ var Form = {
     var sendMethod = $('#send-method');
     sendMethod.change((event) => {
       if (event.target.value === 'ajax') {
-        Form.submit(ajax);
+        Form.submitMethod = 'ajax';
       } else {
-        Form.submit();
+        Form.submitMethod = 'default';
       }
     });
   },
@@ -80,6 +82,9 @@ var Form = {
     Form.method = 'file';
     $('#json-text-form').hide();
     $('#json-file-form').show();
+  },
+  renderCSVReport: (data) => {
+    console.log(data);
   }
 }
 
