@@ -23,5 +23,8 @@
     "@babel/cli": "^7.6.4",
     "@babel/core": "^7.6.4",
     "@babel/preset-react": "^7.6.3"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
