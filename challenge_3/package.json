@@ -6,7 +6,7 @@
   "scripts": {
     "test": "test",
     "start": "nodemon server.js",
-    "build": "./node_modules/.bin/babel client --out-dir pulic --presets=@babel/react --source-maps --watch",
+    "build": "./node_modules/.bin/babel client --out-dir public --presets=@babel/react --source-maps inline --watch",
     "postinstall": "curl -s https://raw.githubusercontent.com/reactorcore/pomander/master/bin/install | bash"
   },
   "repository": {
