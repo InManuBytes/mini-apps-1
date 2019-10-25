@@ -3,43 +3,20 @@
   <head>
     <meta charset="utf-8" />
     <style>
-      html,
-      body {
-        height: 100%;
-      }
-      .container {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        justify-content: center;
-        height: 100%;
-      }
-      .button {
-        font-size: 36px;
-        background-color: rgb(122, 233, 159);
-        padding: 20px;
-        border-radius: 15px;
-      }
-      .button:hover {
-        background-color: rgb(17, 163, 66);
-        color:white;
-      }
-      .button:active {
-        background-color: rgb(15, 231, 87);
-      }
     </style>
+  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
   </head>
   <body>
     <div class='container'>
       <h1>Multi Step Checkout</h1>
       <!-- If not including files in folder use these scripts -->
-      <!-- <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
-        <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script> -->
-      <script src="react.development.js"></script>
-      <script src="react-dom.development.js"></script>
+      <!-- <script src="react.development.js"></script>
+      <script src="react-dom.development.js"></script> -->
       <!-- we create a div for our app -->
-      <div id="app"></div>
-	    <script type="text/babel" src="app.js"></script>
+      <div id="app">
+      </div>
+      <script type="module" src="app.js"></script>
     </div>
   </body>
 </html>
