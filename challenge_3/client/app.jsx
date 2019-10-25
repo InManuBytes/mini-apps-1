@@ -4,8 +4,13 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // put in the input values for the form
-      steps: {1: 'checkout', 2: 'form1', 3: 'form2', 4: 'form3', 5: 'summary'},
+      steps: {
+        1: {id: 'checkout'},
+        2: {id: 'create-account', formFields: ['name', 'email', 'password']},
+        3: {id: 'address', formFields: ['line1', 'line2', 'city', 'state', 'zip']},
+        4: {id: 'credit-card', formFields: ['number', 'expiry-date', 'cvv', 'bill-zip']},
+        5: {id: 'summary'}
+      },
       currStepNum: 1
     };
 
@@ -21,16 +26,21 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Button step={this.state.currStepNum} form={this.state.steps[this.state.currStepNum]} nextStep={this.ClickForNextStep} />
+        <div>
+          <Step step={this.state.currStepNum} form={this.state.steps[this.state.currStepNum]} />
+        </div>
+        <div>
+          <Button step={this.state.currStepNum} formId={this.state.steps[this.state.currStepNum].id} nextStep={this.ClickForNextStep} />
+        </div>
       </div>
     );
   }
 }
 
-const Button = ({step, form, nextStep}) => {
+const Button = ({step, formId, nextStep}) => {
   let value;
   let type;
-  console.log('State step:', step, 'form:', form);
+  console.log('State step:', step, 'form:', formId);
   if (step === 1 || step === 5) {
     type = 'button';
     if (step === 1) {
@@ -43,7 +53,7 @@ const Button = ({step, form, nextStep}) => {
     type = 'submit';
   }
   return (
-    <button type={type} id={form} onClick={nextStep} >{value}</button>
+    <button type={type} id={formId} onClick={nextStep} >{value}</button>
   );
 };
 
@@ -54,17 +64,30 @@ const Button = ({step, form, nextStep}) => {
 // };
 
 // Since
-const Step = (props) => {
+const Step = ({step, form}) => {
   // if the step is 2-3-4 we'd want to render a form
   // if it's 5 we'd want to render the summary
-
+  // first check if it does conditional rendering
+  if (step === 0) {
+    return (
+      <p>Nothing to see here</p>
+    );
+  } else if (step < 5) {
+    return (
+      <Form form={form} />
+    );
+  } else {
+    return (
+      <p>Summary</p>
+    );
+  }
 };
 
-const Form = (props) => {
+const Form = ({form}) => {
   // depending on the step the form will be passed an array with
   // the necessary input fields
   return (
-    <form id={form}>
+    <form id={form.id}>
       <label>
         Name:
         <input type="text" name="name" />
