@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Cell = ({play}) => {
+const Cell = ({player}) => {
   return (
-    <span className='cell' ></span>
+    <span className='cell' id={player} ></span>
   );
 }
 

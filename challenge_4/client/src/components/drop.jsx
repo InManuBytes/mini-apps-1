@@ -1,12 +1,12 @@
-import React from 'react';
+  import React from 'react';
 
-const Drop = ({dropTo, columns}) => {
+  const Drop = ({dropTo, topRow}) => {
   return (
-    columns.map(column => {
+    topRow.map((column, index) => {
       if (column === 0) {
         return (
           <span>
-            <button>
+            <button onClick={ (e) => {dropTo(e, index)} } >
               Drop
             </button>
           </span>

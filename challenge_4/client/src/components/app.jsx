@@ -7,7 +7,15 @@ class App extends React.Component {
     super(props);
     this.state = {
       turn: 0,
-      columns: [0, 0, 0, 0, 0, 0, 0]
+      // The most commonly used Connect Four board size is 7 columns × 6 rows
+      board: [
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0]
+      ]
     };
     // put any bound events here
     this.dropPiece = this.dropPiece.bind(this);
@@ -22,11 +30,11 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <div>
-          <Drop columns={this.state.columns} dropTo={this.dropPiece} />
+        <div className='dropButtons'>
+          <Drop topRow={this.state.board[0]} dropTo={this.dropPiece} />
         </div>
         <div>
-          <Board />
+          <Board board={this.state.board} />
         </div>
       </div>
     );
