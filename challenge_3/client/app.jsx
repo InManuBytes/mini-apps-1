@@ -5,11 +5,23 @@ class App extends React.Component {
     super(props);
     this.state = {
       steps: {
-        1: {id: 'checkout', title: 'Checkout', formFields: []},
-        2: {id: 'createAccount', title: 'Create an Account', formFields: ['name', 'email', 'password']},
-        3: {id: 'address', title: 'Address', formFields: ['line1', 'line2', 'city', 'state', 'zip']},
-        4: {id: 'creditCard', title: 'Credit Card Information', formFields: ['number', 'expiry-date', 'CVV', 'billing-zip-code']},
-        5: {id: 'summary', title: 'Summary of Purchase', formFields: []}
+        1: { id: "checkout", title: "Checkout", formFields: [] },
+        2: {
+          id: "createAccount",
+          title: "Create an Account",
+          formFields: ["name", "email", "password"]
+        },
+        3: {
+          id: "address",
+          title: "Address",
+          formFields: ["line1", "line2", "city", "state", "zip"]
+        },
+        4: {
+          id: "creditCard",
+          title: "Credit Card Information",
+          formFields: ["number", "expiry-date", "CVV", "billing-zip-code"]
+        },
+        5: { id: "summary", title: "Summary of Purchase", formFields: [] }
       },
       currStepNum: 1,
       currentuser: {}
@@ -21,21 +33,39 @@ class App extends React.Component {
 
   handleClickForNextStep(event) {
     event.preventDefault();
-    // TO-DO: make a schema, database
-    // prepare info from form to send to server
-    // an options object should be in the state:
-    // {route: ROUTE, info: {user, form_info}}
-    // until we get cookies figured out
-    console.log('Current State: ', this.state);
-
+    if (this.state.currStepNum > 1 && this.state.currStepNum < 5) {
+      this.handleServerInteraction();
+    }
     // go to the next step
     this.setState(state => {
       // If we need to clear user info
       // if (state.currStepNum === 5) {
       //   this.state.currentuser = {};
       // }
-      return {currStepNum: (state.currStepNum !== 5) ? state.currStepNum + 1 : 1};
+      return {
+        currStepNum: state.currStepNum !== 5 ? state.currStepNum + 1 : 1
+      };
     });
+  }
+
+  handleServerInteraction() {
+    // TO-DO: make a schema, database
+    // prepare info from form to send to server
+    // an options object should be in the state:
+    // {route: ROUTE, info: {user, form_info}}
+    console.log("Current State: ", this.state);
+    var routeEnd = this.state.steps[this.state.currStepNum].id;
+    var options = {
+      route: routeEnd,
+      info: {
+        user: this.state.currentuser.createAccount.name,
+        form: this.state.currentuser[routeEnd]
+      }
+    };
+    // make request to server
+    Server.postFormData(options, (data) => {
+      console.log('DATA BACK FROM SERVER: ', data);
+    })
   }
 
   handleInputChangeOf(event) {
@@ -62,19 +92,28 @@ class App extends React.Component {
     const updatedUser = {
       ...currentuser,
       [step]: updatedFormInfo
-    }
-    this.setState({currentuser: updatedUser});
+    };
+
+    this.setState({ currentuser: updatedUser });
   }
 
   render() {
     var step = this.state.currStepNum;
     if (step === 1) {
       return (
-        <Button step={this.state.currStepNum} onClick={this.handleClickForNextStep} />
+        <Button
+          step={this.state.currStepNum}
+          onClick={this.handleClickForNextStep}
+        />
       );
     } else if (step < 5) {
       return (
-        <Form step={this.state.currStepNum} form={this.state.steps[this.state.currStepNum]} onSubmit={this.handleClickForNextStep} onChange={this.handleInputChangeOf} />
+        <Form
+          step={this.state.currStepNum}
+          form={this.state.steps[this.state.currStepNum]}
+          onSubmit={this.handleClickForNextStep}
+          onChange={this.handleInputChangeOf}
+        />
       );
     } else {
       return (
@@ -85,7 +124,10 @@ class App extends React.Component {
             <Summary purchaseInfo={this.state.currentuser} />
           </div>
           <div>
-            <Button step={this.state.currStepNum} onClick={this.handleClickForNextStep} />
+            <Button
+              step={this.state.currStepNum}
+              onClick={this.handleClickForNextStep}
+            />
           </div>
         </div>
       );
@@ -93,51 +135,58 @@ class App extends React.Component {
   }
 }
 
-const Form = ({step, form, onSubmit, onChange}) => {
+const Form = ({ step, form, onSubmit, onChange }) => {
   // depending on the step the form will be passed an array with
   // the necessary input fields
   // console.log('Form:', form);
-  let formFields = form.formFields;
   return (
-    <form id={form.id} onSubmit={onSubmit} >
+    <form id={form.id} onSubmit={onSubmit}>
       <h1>{form.title}</h1>
-      {formFields.map(field => {
+      {form.formFields.map(field => {
         return (
           // will adding this as a div put it in column mode?
           // Yes, because of flex-direction
           <div>
             <label>
               {field}
-              <input defaultValue='' type="text" id={form.id} name={field} onChange={onChange} />
+              <input
+                defaultValue={field}
+                type="text"
+                id={form.id}
+                name={field}
+                onChange={onChange}
+              />
             </label>
           </div>
         );
       })}
-      <Button step={step} />
+      <Button form={form.id} step={step} />
     </form>
   );
 };
 
-const Button = ({step, onClick}) => {
+const Button = ({ step, onClick }) => {
   let value, type;
   // console.log('State step:', step);
   if (step === 1 || step === 5) {
-    type = 'button';
+    type = "button";
     if (step === 1) {
-      value = 'Proceed to Checkout';
+      value = "Proceed to Checkout";
     } else {
-      value = 'Purchase';
+      value = "Purchase";
     }
     return (
-      <button type={type} onClick={onClick} >{value}</button>
+      <button type={type} onClick={onClick}>
+        {value}
+      </button>
     );
   } else {
-    value = 'Next';
-    type = 'submit';
+    value = "Next";
+    type = "submit";
     return (
       // check if by adding the form attribute with the id of the form
       // submit that form
-      <button type={type} >{value}</button>
+      <button type={type}>{value}</button>
     );
   }
 };
@@ -148,39 +197,41 @@ const Button = ({step, onClick}) => {
 //   form: React.PropTypes.string.isRequired
 // };
 
-const Summary = ({purchaseInfo}) => {
-  return (
-    _.map(purchaseInfo, (formData, formId) => {
-      return <Item formData={formData} title={formId} />
-    })
-  );
+const Summary = ({ purchaseInfo }) => {
+  return _.map(purchaseInfo, (formData, formId) => {
+    return <Item formData={formData} title={formId} />;
+  });
 };
 
-const Item = ({formData, title}) => {
+const Item = ({ formData, title }) => {
   return (
     <span>
       <h2>{title}</h2>
       {_.map(formData, (formField, fieldName) => {
-        return (<span>{fieldName}: {formField} <br></br> </span>);
+        return (
+          <span>
+            {fieldName}: {formField} <br></br>{" "}
+          </span>
+        );
       })}
     </span>
   );
 };
 // we need a post form info function
 const Server = {
-  address: `http://localhost:3000`,
+  address: `http://localhost:3000/`,
   postFormData: (options, callback) => {
     $.ajax({
       url: Server.address + options.route,
-      type: 'POST',
-      data: JSON.stringify(opstions.info),
-      contentType: 'application/json',
+      type: "POST",
+      data: JSON.stringify(options.info),
+      contentType: "application/json",
       success: callback,
-      error: (error) => {
+      error: error => {
         console.log(error);
       }
     });
-  },
-}
+  }
+};
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render(<App />, document.getElementById("app"));
