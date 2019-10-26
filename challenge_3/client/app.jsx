@@ -6,27 +6,58 @@ class App extends React.Component {
     this.state = {
       steps: {
         1: {id: 'checkout', title: 'Checkout', formFields: []},
-        2: {id: 'create-account', title: 'Create an Account', formFields: ['name', 'email', 'password']},
+        2: {id: 'createAccount', title: 'Create an Account', formFields: ['name', 'email', 'password']},
         3: {id: 'address', title: 'Address', formFields: ['line1', 'line2', 'city', 'state', 'zip']},
-        4: {id: 'credit-card', title: 'Credit Card Information', formFields: ['number', 'expiry-date', 'CVV', 'billing-zip-code']},
+        4: {id: 'creditCard', title: 'Credit Card Information', formFields: ['number', 'expiry-date', 'CVV', 'billing-zip-code']},
         5: {id: 'summary', title: 'Summary of Purchase', formFields: []}
       },
-      currStepNum: 1
+      currStepNum: 1,
+      currentuser: {}
     };
 
+    this.handleInputChangeOf = this.handleInputChangeOf.bind(this);
     this.handleClickForNextStep = this.handleClickForNextStep.bind(this);
   }
 
   handleClickForNextStep(event) {
     event.preventDefault();
     // TO-DO: write post route for the server, make a schema, database
+    console.log('Current State: ', this.state);
     this.setState(state => {
+      // If we need to clear user info
+      // if (state.currStepNum === 5) {
+      //   this.state.currentuser = {};
+      // }
       return {currStepNum: (state.currStepNum !== 5) ? state.currStepNum + 1 : 1};
     });
   }
 
   handleInputChangeOf(event) {
-    console.log('INPUT CHANGE: ', event.target.name);
+    const step = event.target.id;
+    // event.target.name gives us the name of the field input being changed
+    const _fieldName = event.target.name;
+    const _fieldValue = event.target.value;
+    // use object destructuring to get currentuser from state
+    const { currentuser } = this.state;
+    // then you want to merge this with the current fieldName, fieldValue pair
+    if (currentuser[step] === undefined) {
+      currentuser[step] = {};
+    }
+    const updatedFormInfo = {
+      ...currentuser[step],
+      [_fieldName]: _fieldValue
+    };
+    // right now we're storing the data throughout the whole process
+    // but we should be able to save this as a session
+    // and with the cookies retrieve all the data at the end
+    const updatedUser = {
+      ...currentuser,
+      [step]: updatedFormInfo
+    }
+    // if (_fieldName === 'password') {
+    //   // hashpassword
+    // }
+    this.setState({currentuser: updatedUser});
   }
 
   render() {
@@ -66,7 +97,7 @@ const Form = ({step, form, onSubmit, onChange}) => {
           <div>
             <label>
               {field}
-              <input type="text" name={field} onChange={onChange} />
+              <input defaultValue='' type="text" id={form.id} name={field} onChange={onChange} />
             </label>
           </div>
         );
@@ -88,7 +119,7 @@ const Button = ({step, onClick}) => {
     }
     return (
       <button type={type} onClick={onClick} >{value}</button>
-    )
+    );
   } else {
     value = 'Next';
     type = 'submit';
