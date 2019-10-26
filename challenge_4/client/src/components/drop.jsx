@@ -5,7 +5,7 @@
     topRow.map((column, index) => {
       if (column === 0) {
         return (
-          <span>
+          <span class='drop' >
             <button onClick={ (e) => {dropTo(e, index)} } >
               Drop
             </button>
@@ -13,7 +13,7 @@
         );
       } else {
         return (
-          <span>
+          <span class = 'drop'>
             <button className='full' >Drop</button>
           </span>
         );
