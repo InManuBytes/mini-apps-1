@@ -22,6 +22,10 @@ class App extends React.Component {
   handleClickForNextStep(event) {
     event.preventDefault();
     // TO-DO: make a schema, database
+    // prepare info from form to send to server
+    // an options object should be in the state:
+    // {route: ROUTE, info: {user, form_info}}
+    // until we get cookies figured out
     console.log('Current State: ', this.state);
 
     // go to the next step
@@ -92,7 +96,7 @@ class App extends React.Component {
 const Form = ({step, form, onSubmit, onChange}) => {
   // depending on the step the form will be passed an array with
   // the necessary input fields
-  console.log('Form:', form);
+  // console.log('Form:', form);
   let formFields = form.formFields;
   return (
     <form id={form.id} onSubmit={onSubmit} >
@@ -116,7 +120,7 @@ const Form = ({step, form, onSubmit, onChange}) => {
 
 const Button = ({step, onClick}) => {
   let value, type;
-  console.log('State step:', step);
+  // console.log('State step:', step);
   if (step === 1 || step === 5) {
     type = 'button';
     if (step === 1) {

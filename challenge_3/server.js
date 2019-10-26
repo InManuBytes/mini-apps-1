@@ -10,7 +10,20 @@ const port = 3000;
 app.use(express.static(__dirname + '/public'));
 //app.use(cors());
 
-app.get('/', (req, res) => res.send('Hello World!'));
+//app.get('/', (req, res) => res.send('Hello World!'));
+
+// the routes we have to serve are
+app.post('/createAccount', (req, res, next) => {
+
+});
+
+app.post('/address', (req, res, next) => {
+
+});
+
+app.post('/creditCard', (req, res, next) => {
+
+});
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
