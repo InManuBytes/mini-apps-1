@@ -21,8 +21,10 @@ class App extends React.Component {
 
   handleClickForNextStep(event) {
     event.preventDefault();
-    // TO-DO: write post route for the server, make a schema, database
+    // TO-DO: make a schema, database
     console.log('Current State: ', this.state);
+
+    // go to the next step
     this.setState(state => {
       // If we need to clear user info
       // if (state.currStepNum === 5) {
@@ -46,17 +48,17 @@ class App extends React.Component {
     const updatedFormInfo = {
       ...currentuser[step],
       [_fieldName]: _fieldValue
+      // if (_fieldName === 'password') {
+      //   // hashpassword
+      // }
     };
     // right now we're storing the data throughout the whole process
     // but we should be able to save this as a session
-    // and with the cookies retrieve all the data at the end
+    // and with the cookies retrieve all the data at the end?
     const updatedUser = {
       ...currentuser,
       [step]: updatedFormInfo
     }
-    // if (_fieldName === 'password') {
-    //   // hashpassword
-    // }
     this.setState({currentuser: updatedUser});
   }
 
@@ -74,8 +76,13 @@ class App extends React.Component {
       return (
         // TO DO - Summary component
         <div>
-          <p>Summary</p>
-          <Button step={this.state.currStepNum} onClick={this.handleClickForNextStep} />
+          <h1>Summary</h1>
+          <div>
+            <Summary purchaseInfo={this.state.currentuser} />
+          </div>
+          <div>
+            <Button step={this.state.currStepNum} onClick={this.handleClickForNextStep} />
+          </div>
         </div>
       );
     }
@@ -137,8 +144,39 @@ const Button = ({step, onClick}) => {
 //   form: React.PropTypes.string.isRequired
 // };
 
-const Summary = (props) => {
-
+const Summary = ({purchaseInfo}) => {
+  return (
+    _.map(purchaseInfo, (formData, formId) => {
+      return <Item formData={formData} title={formId} />
+    })
+  );
 };
+
+const Item = ({formData, title}) => {
+  return (
+    <span>
+      <h2>{title}</h2>
+      {_.map(formData, (formField, fieldName) => {
+        return (<span>{fieldName}: {formField} <br></br> </span>);
+      })}
+    </span>
+  );
+};
+// we need a post form info function
+const Server = {
+  address: `http://localhost:3000`,
+  postFormData: (options, callback) => {
+    $.ajax({
+      url: Server.address + options.route,
+      type: 'POST',
+      data: JSON.stringify(opstions.info),
+      contentType: 'application/json',
+      success: callback,
+      error: (error) => {
+        console.log(error);
+      }
+    });
+  },
+}
 
 ReactDOM.render(<App />, document.getElementById('app'));
