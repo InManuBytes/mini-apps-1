@@ -12,7 +12,11 @@
           </span>
         );
       } else {
-        return <span></span>
+        return (
+          <span>
+            <button className='full' >Drop</button>
+          </span>
+        );
       }
     })
   );
