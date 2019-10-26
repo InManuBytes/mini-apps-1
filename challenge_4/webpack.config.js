@@ -1,11 +1,11 @@
 const path = require('path');
 
 module.exports = {
-  entry: __dirname + '/client/src/index.js',
+  entry: __dirname + '/client/src/index.jsx',
   module: {
     rules: [
       {
-        test: [/\.jsx$/],
+        test: [/\.js$/, /\.jsx?$/],
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',

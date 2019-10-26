@@ -2,8 +2,40 @@
 <html>
   <head>
     <title>Connect Four</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+      .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 80%;
+        padding-inline: 20px;
+      }
+      .cell {
+        border-radius: 30px;
+        padding: 20px;
+        border: solid 2px;
+      }
+      #player1 {
+        background-color: blue;
+      }
+      #player2 {
+        background-color: red;
+      }
+      span {
+        margin-right: 20px;
+        margin-left: 20px;
+      }
+      .row {
+        padding: 25px;
+      }
+    </style>
   </head>
   <body>
+    <div id="app" class="container"></div>
     <script src="bundle.js"></script>
   </body>
 </html>
