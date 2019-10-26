@@ -4,9 +4,9 @@ import BoardRow from './boardRow.jsx'
 const Board = ({board, turn}) => {
   console.log('CURRENT BOARD', board);
   return (
-    board.map(boardRow => {
+    board.map((boardRow, index) => {
       return (
-        <div className='row' >
+        <div key={index} className='row' >
           <BoardRow row={boardRow} />
         </div>
       );
