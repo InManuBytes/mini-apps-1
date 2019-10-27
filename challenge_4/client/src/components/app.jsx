@@ -48,7 +48,7 @@ class App extends React.Component {
   }
 
   CheckWinner(board, { i, j }, player) {
-    console.log("Checking winner");
+    console.log("Checking winner for: ", board);
     const checkDiagWin = (board, rowIdx, colIdx, player) => {
       var startRowIdx = 0;
       var startColIdx = 0;
@@ -69,14 +69,7 @@ class App extends React.Component {
         ) {
           if (inARow === 4) {
             break;
-          } else if (
-            (board[i][j] === player &&
-              // we only add to inARow if the next in the diagonal is the same
-              // or if we're at the end and we have some in a row
-              ((i !== board.length - 1 || j !== board.length - 1) &&
-                board[i + 1][j + 1] === player)) ||
-            (inARow > 0 && (i === board.length || j === board.length))
-          ) {
+          } else if (board[i][j] === player && (inARow === 0 || board[i - 1][j - 1] === player)) {
             inARow++;
           } else {
             // otherwise we just reset the counter
@@ -106,14 +99,7 @@ class App extends React.Component {
         ) {
           if (inARow === 4) {
             break;
-          } else if (
-            (board[i][j] === player &&
-              // we only add to inARow if the next in the diagonal is the same
-              // or if we're at the end and we have some in a row
-              ((i !== board.length - 1 || j !== 0) &&
-                board[i + 1][j - 1] === player)) ||
-            (inARow > 0 && (i === board.length || j === 0))
-          ) {
+          } else if (board[i][j] === player && (inARow === 0 || board[i - 1][j + 1] === player)) {
             inARow++;
           } else {
             // otherwise we just reset the counter
@@ -156,8 +142,7 @@ class App extends React.Component {
 
     return (
       checkRowWin(board, i, player) ||
-      checkColWin(board, j, player) ||
-      checkDiagWin(board, i, j, player)
+      checkColWin(board, j, player)
     );
   }
 
