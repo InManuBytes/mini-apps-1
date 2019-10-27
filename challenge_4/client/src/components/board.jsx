@@ -1,12 +1,12 @@
 import React from 'react';
 import BoardRow from './boardRow.jsx'
 
-const Board = ({board, turn}) => {
+const Board = ({board, winner}) => {
   return (
     board.map((boardRow, index) => {
       return (
         <div key={index} className='row' >
-          <BoardRow row={boardRow} />
+          <BoardRow row={boardRow} winner={winner} />
         </div>
       );
     })

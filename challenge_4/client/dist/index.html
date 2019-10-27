@@ -9,6 +9,7 @@
       }
       .container {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         height: 80%;
@@ -40,6 +41,47 @@
       }
       .full {
         color: white;
+      }
+      .winner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      #player1winner {
+        background-color: blue;
+        animation: blinking 2s;
+        -webkit-animation: blinking 1s infinite;
+      }
+      #player2winner {
+        background-color: red;
+        animation: blinking 2s;
+        -webkit-animation: blinking 1s infinite;
+      }
+      .winner-banner {
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        animation: blinking 1s infinte;
+        -webkit-animation: blinking 1s infinite;
+        font-size: 48px;
+      }
+      @keyframes blinking {
+        /* You could think of as "step 1" */
+        0% {
+          opacity: 0;
+        }
+        /* You could think of as "step 2" */
+        100% {
+          opacity: 1;
+        }
+      }
+      @-webkit-keyframes blinking {
+        /* You could think of as "step 1" */
+        0% {
+          opacity: 0;
+        }
+        /* You could think of as "step 2" */
+        100% {
+          opacity: 1;
+        }
       }
     </style>
   </head>
