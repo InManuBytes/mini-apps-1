@@ -24,43 +24,65 @@ class App extends React.Component {
     this.clickDropPieceHandler = this.clickDropPieceHandler.bind(this);
   }
 
-  clickDropPieceHandler(event, column) {
-    var newBoard = this.placePiece(column);
-    this.setState(state => {
-      var winner = this.CheckWinner(this.state.board, this.state.lastPiece, this.state.turn);
-      return {
-        board: newBoard,
-        turn: state.turn === 2 ? 1 : 2,
-        winner: winner
-      };
-    });
-  }
-
-  placePiece(columnIdx) {
-    return this.state.board.map((row, rowIdx) => {
+  clickDropPieceHandler(event, columnIdx) {
+    var piecePlaced = {j: columnIdx};
+    var newBoard = this.state.board.map((row, rowIdx) => {
       if (rowIdx === 5 || this.state.board[rowIdx + 1][columnIdx] !== 0) {
         if (row[columnIdx] === 0) {
           row[columnIdx] = this.state.turn;
-          this.setState({lastPiece: {i: rowIdx, j: columnIdx}})
+          piecePlaced.i = rowIdx;
         }
       }
       return row;
     });
+    var winner = this.CheckWinner(newBoard, piecePlaced, this.state.turn);
+    this.setState(state => {
+      return {
+        board: newBoard,
+        turn: state.turn === 2 ? 1 : 2,
+        winner: winner,
+        lastPiece: piecePlaced
+      };
+    });
   }
 
   CheckWinner(board, {i, j}, player) {
-    const checkColWin = (board, colIdx) => {
+    console.log("Checking winner");
+    const checkDiagWin = (board, rowIdx, colIdx) => {
 
-    }
-    const checkRowWin = (rowIdx) => {
-      board.forEach(row => {
-
-      })
     };
 
-    var rowWin = checkRowWin(board, colIdx);
-    console.log("Checking winner");
-    return false;
+    const checkColWin = (board, colIdx, player) => {
+      var inARow = board.reduce((counter, row, rowIdx, board) => {
+        if (counter === 4) {
+          return counter;
+        }
+        if (board[rowIdx][colIdx] === player) {
+          counter++;
+        } else {
+          counter = 0;
+        }
+        return counter;
+      }, 0);
+      return (inARow === 4) ? true: false;
+    };
+
+    const checkRowWin = (board, rowIdx, player) => {
+      var inARow = board[rowIdx].reduce((counter, play) => {
+        if (counter === 4) {
+          return counter;
+        }
+        if (play === player) {
+          counter++;
+        } else {
+          counter = 0;
+        }
+        return counter;
+      }, 0);
+      return (inARow === 4) ? true: false;
+    };
+
+    return (checkRowWin(board, i, player) || checkColWin(board, j, player));
   }
 
   render() {
