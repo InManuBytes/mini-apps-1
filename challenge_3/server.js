@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const router = require('./routes.js');
+
 const port = 3000;
 
 // middleware
@@ -13,11 +15,14 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use('/classes', router);
+
 //app.get('/', (req, res) => res.send('Hello World!'));
 
 // the routes we have to serve are
 app.post('/createAccount', (req, res, next) => {
   console.log('REQ: ', req.body);
+  next();
 });
 
 app.post('/address', (req, res, next) => {
