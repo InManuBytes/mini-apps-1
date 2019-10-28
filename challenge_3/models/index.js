@@ -1,9 +1,1 @@
-var db = require('../db/index.js');
-
-module.exports = {
-  account: {
-    post: (req, res) => {
-
-    }
-  }
-};
+// TO DO write models like in shortly repo

@@ -1,17 +1,22 @@
 var mysql = require('mysql');
-// TO DO install mysql
-
-// Create a database connection and export it from this file.
-// You will need to connect with the user "root", no password,
-// and to the database "chat".
+const createTables = require('./config');
+const Promise = require('bluebird');
+const database = 'checkout';
 
 var connection = mysql.createConnection({
   user: 'root',
-  password: '',
-  database: 'checkout'
+  password: ''
 });
 
-//This line is included because I see the .connect() in the test file
-connection.connect();
+// I was having trouble thinking about how to connect to the database
+// Promises feel familiar, and are easy to work with,
+// might be better to promisify the connection with the database
+const db = Promise.promisifyAll(connection, { multiArgs: true });
 
-module.exports.connection = connection;
+db.connectAsync()
+  .then(() => console.log(`Connected to ${database} database as ID ${db.threadId}`))
+  .then(() => db.queryAsync(`CREATE DATABASE IF NOT EXISTS ${database}`))
+  .then(() => db.queryAsync(`USE ${database}`))
+  .then(() => createTables(db));
+
+module.exports = db;

@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
-const router = require('./routes.js');
+// const router = require('./routes.js');
+var models = require('./models');
 
 const port = 3000;
 
@@ -15,13 +16,13 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/classes', router);
+// app.use('/classes', router);
 
 //app.get('/', (req, res) => res.send('Hello World!'));
 
 // the routes we have to serve are
 app.post('/createAccount', (req, res, next) => {
-  console.log('REQ: ', req.body);
+  // console.log('REQ: ', req.body);
   next();
 });
 
