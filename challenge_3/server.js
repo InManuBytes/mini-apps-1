@@ -23,6 +23,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // the routes we have to serve are
 app.post('/createAccount', (req, res, next) => {
   // console.log('REQ: ', req.body);
+  models.account.post(req.form, )
   next();
 });
 

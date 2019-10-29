@@ -26,15 +26,12 @@ CREATE TABLE addresses (
 ) ENGINE = InnoDB;
 
 CREATE TABLE credit (
-  /* Describe your table here.*/
   id INT NOT NULL AUTO_INCREMENT,
   user INT,
   card_number INT,
   expiry INT,
   CVV INT,
   billing_zip INT,
-  -- the user is linked to the users table
-  room INT,
   foreign key (user)
     references users(id)
     ON DELETE CASCADE,
