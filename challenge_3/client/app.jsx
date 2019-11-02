@@ -54,7 +54,7 @@ class App extends React.Component {
     var form = this.state.steps[this.state.currStepNum].id;
     var formData = {
       step: form,
-      form: this.state.currentuser[form]
+      form: JSON.stringify(this.state.currentuser[form])
     };
     // make request to server
     Server.postFormData(formData, (data) => {
@@ -218,8 +218,7 @@ const Server = {
     $.ajax({
       url: Server.address + 'submit',
       type: "POST",
-      data: JSON.stringify(formData),
-      contentType: "application/json",
+      data: {step: formData.step, form: formData.form},
       success: callback,
       error: error => {
         console.log(error);

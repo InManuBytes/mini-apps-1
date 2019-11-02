@@ -18,14 +18,16 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// app.use('/classes', router);
-
-//app.get('/', (req, res) => res.send('Hello World!'));
-
 // the routes we have to serve are
 app.post('/submit', (req, res, next) => {
   console.log('REQ: ', req.body);
-  //models.account.post(req.form, )
+  // first check if user already has an account created
+  var step = req.body.step;
+  var formData = JSON.parse(req.body.form);
+
+  //return models.Accounts.get()
+
+  //models.Accounts.create(req.form, )
   next();
 });
 
