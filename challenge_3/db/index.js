@@ -12,8 +12,6 @@ var connection = mysql.createConnection({
 // hence the schema.sql. But I wanted to be able to
 // hash the password like in shortly.
 // I was having trouble thinking about how to connect to the database
-// without something like sequelize or a controller + model
-// to deal with the callbacks.
 // Promises feel familiar, and are easy to work with, looking through
 // the shortly code I found how it promisifies mysql.
 // Here just trying to understand it from the documentation

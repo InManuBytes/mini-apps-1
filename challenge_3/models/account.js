@@ -7,23 +7,26 @@ const Model = require('./model');
  * @constructor
  * @augments Model
  */
-class Password extends Model {
+class Accounts extends Model {
   constructor() {
-    super('passwords');
+    super('accounts');
   }
   /**
-   * Creates a new user record with the given username and password.
+   * Creates a new account record with the given username and password.
    * This method creates a salt and hashes the password before storing
-   * the username, hashed password, and salt in the database.
-   * @param {string} user.password - The plaintext password.
+   * the account's name, email, hashed password, and salt in the database.
+   * @param {Object} account - The account object.
+   * @param {string} account.username - The user's username.
+   * @param {string} account.password - The plaintext password.
    * @returns {Promise<Object>} A promise that is fulfilled with the result of
    * the record creation or rejected with the error that occured.
    */
-  create({ username, password }) {
+  create({ name, email, password }) {
     let salt = utils.createRandom32String();
 
     let newUser = {
-      username,
+      name,
+      email,
       salt,
       password: utils.createHash(password, salt)
     };
@@ -33,4 +36,4 @@ class Password extends Model {
 }
 
 
-module.exports = new Users();
+module.exports = new Accounts();

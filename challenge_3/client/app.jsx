@@ -49,9 +49,6 @@ class App extends React.Component {
   }
 
   handleServerInteraction() {
-    // TO-DO: make a schema, database
-    // prepare info from form to send to server
-    // an options object should be in the state:
     // {route: ROUTE, info: {user, form_info}}
     console.log("Current State: ", this.state);
     var routeEnd = this.state.steps[this.state.currStepNum].id;

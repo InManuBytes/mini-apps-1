@@ -10,7 +10,9 @@ module.exports = (db) => {
     CREATE TABLE IF NOT EXISTS accounts (
       id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
       name VARCHAR(255),
-      email VARCHAR(255)
+      email VARCHAR(255),
+      password VARCHAR(64),
+      salt VARCHAR(64)
     );`)
     .then(() => {
       // Create addresses table
@@ -28,24 +30,14 @@ module.exports = (db) => {
     .then(() => {
       // Create credit cards info table
       return db.queryAsync(`
-        CREATE TABLE IF NOT EXISTS credit (
+        CREATE TABLE IF NOT EXISTS cards (
           id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
           number VARCHAR(30),
           expiry VARCHAR(10),
           cvv VARCHAR(3),
           billZip VARCHAR(11),
           userId INT
-        );`);
-    })
-    .then(() => {
-      // Create hashed passwords table
-      return db.queryAsync(`
-        CREATE TABLE IF NOT EXISTS passwords (
-          id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-          password VARCHAR(64),
-          salt VARCHAR(64),
-          userID INT
-        );`);
+        )`);
     })
     .error(err => {
       console.log(err);

@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
 // const router = require('./routes.js');
-var models = require('./models');
+const models = require('./models');
+const utils = require('./lib/hashUtils');
+
 
 const port = 3000;
 
@@ -22,8 +24,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // the routes we have to serve are
 app.post('/createAccount', (req, res, next) => {
-  // console.log('REQ: ', req.body);
-  models.account.post(req.form, )
+  console.log('REQ: ', req.body);
+  //models.account.post(req.form, )
   next();
 });
 
