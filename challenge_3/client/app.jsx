@@ -51,16 +51,13 @@ class App extends React.Component {
   handleServerInteraction() {
     // {route: ROUTE, info: {user, form_info}}
     console.log("Current State: ", this.state);
-    var routeEnd = this.state.steps[this.state.currStepNum].id;
-    var options = {
-      route: routeEnd,
-      info: {
-        user: this.state.currentuser.createAccount.name,
-        form: this.state.currentuser[routeEnd]
-      }
+    var form = this.state.steps[this.state.currStepNum].id;
+    var formData = {
+      step: form,
+      form: this.state.currentuser[form]
     };
     // make request to server
-    Server.postFormData(options, (data) => {
+    Server.postFormData(formData, (data) => {
       console.log('DATA BACK FROM SERVER: ', data);
     })
   }
@@ -217,11 +214,11 @@ const Item = ({ formData, title }) => {
 // we need a post form info function
 const Server = {
   address: `http://localhost:3000/`,
-  postFormData: (options, callback) => {
+  postFormData: (formData, callback) => {
     $.ajax({
-      url: Server.address + options.route,
+      url: Server.address + 'submit',
       type: "POST",
-      data: JSON.stringify(options.info),
+      data: JSON.stringify(formData),
       contentType: "application/json",
       success: callback,
       error: error => {

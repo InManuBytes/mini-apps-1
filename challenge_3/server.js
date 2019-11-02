@@ -23,18 +23,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //app.get('/', (req, res) => res.send('Hello World!'));
 
 // the routes we have to serve are
-app.post('/createAccount', (req, res, next) => {
+app.post('/submit', (req, res, next) => {
   console.log('REQ: ', req.body);
   //models.account.post(req.form, )
   next();
-});
-
-app.post('/address', (req, res, next) => {
-
-});
-
-app.post('/creditCard', (req, res, next) => {
-
 });
 
 app.listen(port, () => console.log(`Checkout app listening on port ${port}!`));
