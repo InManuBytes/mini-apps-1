@@ -24,7 +24,8 @@ class App extends React.Component {
         5: { id: "summary", title: "Summary of Purchase", formFields: [] }
       },
       currStepNum: 1,
-      currentuser: {}
+      currentuser: {},
+      userId: null
     };
 
     this.handleInputChangeOf = this.handleInputChangeOf.bind(this);
@@ -38,12 +39,9 @@ class App extends React.Component {
     }
     // go to the next step
     this.setState(state => {
-      // If we need to clear user info
-      // if (state.currStepNum === 5) {
-      //   this.state.currentuser = {};
-      // }
       return {
-        currStepNum: state.currStepNum !== 5 ? state.currStepNum + 1 : 1
+        currStepNum: state.currStepNum !== 5 ? state.currStepNum + 1 : 1,
+        currentuser: {},
       };
     });
   }
@@ -59,6 +57,10 @@ class App extends React.Component {
     // make request to server
     Server.postFormData(formData, (data) => {
       console.log('DATA BACK FROM SERVER: ', data);
+      if (data.userId) {
+        console.log('CREATED NEW USER RECORD WITH ID: ', data.userId);
+        this.setState({userId: data.userId});
+      }
     })
   }
 
@@ -76,13 +78,7 @@ class App extends React.Component {
     const updatedFormInfo = {
       ...currentuser[step],
       [_fieldName]: _fieldValue
-      // if (_fieldName === 'password') {
-      //   // hashpassword
-      // }
     };
-    // right now we're storing the data throughout the whole process
-    // but we should be able to save this as a session
-    // and with the cookies retrieve all the data at the end?
     const updatedUser = {
       ...currentuser,
       [step]: updatedFormInfo
@@ -136,11 +132,11 @@ const Form = ({ step, form, onSubmit, onChange }) => {
   return (
     <form id={form.id} onSubmit={onSubmit}>
       <h1>{form.title}</h1>
-      {form.formFields.map(field => {
+      {form.formFields.map((field, index) => {
         return (
           // will adding this as a div put it in column mode?
           // Yes, because of flex-direction
-          <div>
+          <div key={index}>
             <label>
               {field}
               <input
@@ -178,22 +174,14 @@ const Button = ({ step, onClick }) => {
     value = "Next";
     type = "submit";
     return (
-      // check if by adding the form attribute with the id of the form
-      // submit that form
       <button type={type}>{value}</button>
     );
   }
 };
 
-// ERROR: cannot read property number of undefined
-// Button.propTypes = {
-//   step: React.PropTypes.number.isRequired,
-//   form: React.PropTypes.string.isRequired
-// };
-
 const Summary = ({ purchaseInfo }) => {
   return _.map(purchaseInfo, (formData, formId) => {
-    return <Item formData={formData} title={formId} />;
+    return <Item key={formId} formData={formData} title={formId} />;
   });
 };
 
@@ -203,7 +191,7 @@ const Item = ({ formData, title }) => {
       <h2>{title}</h2>
       {_.map(formData, (formField, fieldName) => {
         return (
-          <span>
+          <span key={fieldName} >
             {fieldName}: {formField} <br></br>{" "}
           </span>
         );
@@ -211,7 +199,7 @@ const Item = ({ formData, title }) => {
     </span>
   );
 };
-// we need a post form info function
+
 const Server = {
   address: `http://localhost:3000/`,
   postFormData: (formData, callback) => {
@@ -219,6 +207,7 @@ const Server = {
       url: Server.address + 'submit',
       type: "POST",
       data: {step: formData.step, form: formData.form},
+      dataType: 'json',
       success: callback,
       error: error => {
         console.log(error);
