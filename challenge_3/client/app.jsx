@@ -19,7 +19,7 @@ class App extends React.Component {
         4: {
           id: "creditCard",
           title: "Credit Card Information",
-          formFields: ["number", "expiry-date", "CVV", "billing-zip-code"]
+          formFields: ["number", "expiry", "cvv", "billZip"]
         },
         5: { id: "summary", title: "Summary of Purchase", formFields: [] }
       },
@@ -36,32 +36,32 @@ class App extends React.Component {
     event.preventDefault();
     if (this.state.currStepNum > 1 && this.state.currStepNum < 5) {
       this.handleServerInteraction();
+    } else {
+      this.setState(state => {
+        return {
+          currStepNum: state.currStepNum !== 5 ? state.currStepNum + 1 : 1
+        };
+      });
     }
-    // go to the next step
-    this.setState(state => {
-      return {
-        currStepNum: state.currStepNum !== 5 ? state.currStepNum + 1 : 1,
-        currentuser: {},
-      };
-    });
   }
 
   handleServerInteraction() {
-    // {route: ROUTE, info: {user, form_info}}
-    console.log("Current State: ", this.state);
     var form = this.state.steps[this.state.currStepNum].id;
     var formData = {
+      userId: this.state.userId,
       step: form,
       form: JSON.stringify(this.state.currentuser[form])
     };
     // make request to server
-    Server.postFormData(formData, (data) => {
-      console.log('DATA BACK FROM SERVER: ', data);
+    Server.postFormData(formData, data => {
+      console.log("DATA BACK FROM SERVER: ", data);
       if (data.userId) {
-        console.log('CREATED NEW USER RECORD WITH ID: ', data.userId);
-        this.setState({userId: data.userId});
+        console.log("CREATED NEW USER RECORD WITH ID: ", data.userId);
+        this.setState(state => {
+          return { userId: data.userId, currentuser: {}, currStepNum: state.currStepNum + 1 }
+        });
       }
-    })
+    });
   }
 
   handleInputChangeOf(event) {
@@ -88,6 +88,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log("Rendering State: ", this.state);
     var step = this.state.currStepNum;
     if (step === 1) {
       return (
@@ -140,7 +141,7 @@ const Form = ({ step, form, onSubmit, onChange }) => {
             <label>
               {field}
               <input
-                defaultValue={field}
+                defaultValue=""
                 type="text"
                 id={form.id}
                 name={field}
@@ -173,9 +174,7 @@ const Button = ({ step, onClick }) => {
   } else {
     value = "Next";
     type = "submit";
-    return (
-      <button type={type}>{value}</button>
-    );
+    return <button type={type}>{value}</button>;
   }
 };
 
@@ -191,7 +190,7 @@ const Item = ({ formData, title }) => {
       <h2>{title}</h2>
       {_.map(formData, (formField, fieldName) => {
         return (
-          <span key={fieldName} >
+          <span key={fieldName}>
             {fieldName}: {formField} <br></br>{" "}
           </span>
         );
@@ -204,10 +203,10 @@ const Server = {
   address: `http://localhost:3000/`,
   postFormData: (formData, callback) => {
     $.ajax({
-      url: Server.address + 'submit',
+      url: Server.address + "submit",
       type: "POST",
-      data: {step: formData.step, form: formData.form},
-      dataType: 'json',
+      data: { userId: formData.userId, step: formData.step, form: formData.form },
+      dataType: "json",
       success: callback,
       error: error => {
         console.log(error);
