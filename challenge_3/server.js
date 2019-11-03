@@ -77,5 +77,11 @@ app.post('/submit', (req, res, next) => {
   }
 });
 
+app.get('/getSummary', (req, res, next) => {
+  console.log('SUMMARY', req.query);
+  res.end('REQUEST AT SERVER');
+  next();
+});
+
 app.listen(port, () => console.log(`Checkout app listening on port ${port}!`));
 

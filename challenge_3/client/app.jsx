@@ -112,7 +112,7 @@ class App extends React.Component {
         <div>
           <h1>Summary</h1>
           <div>
-            <Summary purchaseInfo={this.state.currentuser} />
+            <Summary userId={this.state.userId} />
           </div>
           <div>
             <Button
@@ -178,11 +178,27 @@ const Button = ({ step, onClick }) => {
   }
 };
 
-const Summary = ({ purchaseInfo }) => {
-  return _.map(purchaseInfo, (formData, formId) => {
-    return <Item key={formId} formData={formData} title={formId} />;
-  });
-};
+class Summary extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      purchaseInfo: []
+    };
+  }
+
+  componentDidMount() {
+    console.log('PROPS', this.props);
+    Server.getSummary(this.props.userId, (data) => {
+
+    })
+  }
+
+  render() {
+    return _.map(this.state.purchaseInfo, (formData, formId) => {
+      return <Item key={formId} formData={formData} title={formId} />;
+    });
+  }
+}
 
 const Item = ({ formData, title }) => {
   return (
@@ -212,6 +228,19 @@ const Server = {
         console.log(error);
       }
     });
+  },
+  getSummary: (userId, callback) => {
+    $.ajax({
+      url: Server.address + "getSummary",
+      type: 'GET',
+      data: {userId: userId},
+      contentData: 'application/json',
+      dataType: 'json',
+      success: callback,
+      error: error => {
+        console.log(error);
+      }
+    })
   }
 };
 
