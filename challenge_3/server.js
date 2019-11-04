@@ -99,8 +99,10 @@ app.get('/getSummary', (req, res, next) => {
       return models.Cards.get({userId: userId})
     })
     .then(card => {
+      var cardRegEx = /[0-9]+(?=[0-9]{4}$)/;
+      var cardNumber = _.replace(card.number, cardRegEx, '');
       summary.form3 = {
-        number: card.number,
+        number: cardNumber,
         expiry: card.expiry,
         cvv: card.cvv,
         billZip: card.billZip

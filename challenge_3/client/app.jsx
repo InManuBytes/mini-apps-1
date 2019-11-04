@@ -188,13 +188,21 @@ class Summary extends React.Component {
 
   componentDidMount() {
     Server.getSummary(this.props.userId, (data) => {
-      console.log('SUMMARY: ', data);
+      this.setState({purchaseInfo: data});
     })
   }
 
   render() {
     return _.map(this.state.purchaseInfo, (formData, formId) => {
-      return <Item key={formId} formData={formData} title={formId} />;
+      var title;
+      if (formId === 'form1') {
+        title = 'Account Details';
+      } else if (formId === 'form2') {
+        title = 'Shipping Information';
+      } else {
+        title = 'Payment Information';
+      }
+      return <Item key={formId} formData={formData} title={title} />;
     });
   }
 }
@@ -204,6 +212,9 @@ const Item = ({ formData, title }) => {
     <span>
       <h2>{title}</h2>
       {_.map(formData, (formField, fieldName) => {
+        if (formField === 'number') {
+          formField = 'Card Number (Last 4 digits)';
+        }
         return (
           <span key={fieldName}>
             {fieldName}: {formField} <br></br>{" "}
