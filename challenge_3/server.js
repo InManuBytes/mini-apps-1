@@ -85,7 +85,6 @@ app.get('/getSummary', (req, res, next) => {
   return models.Accounts.get({id: userId})
     .then(account => {
       summary.form1 = {name: account.name, email: account.email};
-      console.log('SUMMARY OF ACCOUNT: ', summary);
       return models.Addresses.get({userId: userId})
     })
     .then(address => {
@@ -95,7 +94,6 @@ app.get('/getSummary', (req, res, next) => {
         city: address.city,
         zip: address.zip
       };
-      console.log('SUMMARY: ', summary);
       return models.Cards.get({userId: userId})
     })
     .then(card => {
