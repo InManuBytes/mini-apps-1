@@ -187,9 +187,8 @@ class Summary extends React.Component {
   }
 
   componentDidMount() {
-    console.log('PROPS', this.props);
     Server.getSummary(this.props.userId, (data) => {
-
+      console.log('SUMMARY: ', data);
     })
   }
 

@@ -10,6 +10,7 @@ const port = 3000;
 // middleware
 //const cors = require('cors')
 var bodyParser = require("body-parser");
+var _ = require('lodash');
 
 // we want to serve our JS files in the public folder,
 // where Babel is placing the transpiled files.
@@ -55,7 +56,7 @@ app.post('/submit', (req, res, next) => {
     }
     var saveRecord;
     if (step === 'address') {
-      saveRecord = models.Adresses;
+      saveRecord = models.Addresses;
     } else {
       saveRecord = models.Cards;
     }
@@ -78,9 +79,38 @@ app.post('/submit', (req, res, next) => {
 });
 
 app.get('/getSummary', (req, res, next) => {
-  console.log('SUMMARY', req.query);
-  res.end('REQUEST AT SERVER');
-  next();
+  // console.log('SUMMARY', req.query); => {userId: 'userId'}
+  var userId = _.toNumber(req.query.userId);
+  var summary = {form1: {}, form2: {}, form3: {}};
+  return models.Accounts.get({id: userId})
+    .then(account => {
+      summary.form1 = {name: account.name, email: account.email};
+      console.log('SUMMARY OF ACCOUNT: ', summary);
+      return models.Addresses.get({userId: userId})
+    })
+    .then(address => {
+      summary.form2 = {
+        line1: address.line1,
+        line2: address.line2,
+        city: address.city,
+        zip: address.zip
+      };
+      console.log('SUMMARY: ', summary);
+      return models.Cards.get({userId: userId})
+    })
+    .then(card => {
+      summary.form3 = {
+        number: card.number,
+        expiry: card.expiry,
+        cvv: card.cvv,
+        billZip: card.billZip
+      };
+      res.end(JSON.stringify(summary));
+      next();
+    })
+    .catch(error => {
+      console.log(error);
+    });
 });
 
 app.listen(port, () => console.log(`Checkout app listening on port ${port}!`));
