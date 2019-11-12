@@ -2,7 +2,7 @@ import $ from 'jquery';
 
 const Server = {
   address: `http://localhost:3000`,
-  singup: (user, callback) => {
+  signup: (user, callback) => {
     $.ajax({
       url: Server.address + '/signup',
       type: 'POST',
@@ -15,4 +15,6 @@ const Server = {
       }
     });
   }
-}
+};
+
+export default Server;

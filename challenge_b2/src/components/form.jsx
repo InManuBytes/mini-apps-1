@@ -28,8 +28,9 @@ class Form extends React.Component {
     })
   }
 
-  handleFormSubmit() {
-    this.props.server.singup(this.state.signup, (data) => {
+  handleFormSubmit(e) {
+    e.preventDefault();
+    this.props.server.signup(this.state.signup, (data) => {
       console.log('USER ACCOUNT CREATED', data);
     })
   }

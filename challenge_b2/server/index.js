@@ -6,5 +6,8 @@ const port = 3000;
 
 app.use(express.static(path.join(__dirname, '../public')));
 
-// eslint-disable-next-line no-console
+app.post('/signup', (req, res) => {
+  res.end('server received requet');
+});
+
 app.listen(port, () => console.log(`Battleship listening on port ${port}`));
