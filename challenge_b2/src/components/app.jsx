@@ -1,6 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/prefer-stateless-function */
-/* eslint-disable no-useless-constructor */
 import React from 'react';
 import _ from 'lodash';
 import Board from './board.jsx';
@@ -11,8 +8,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       currentPlayer: null,
-      currentStep: 1,
-      steps: {
+      currentView: 'signup',
+      views: {
         1: 'signup',
         2: 'set-ships',
         3: 'loading',
@@ -21,8 +18,36 @@ class App extends React.Component {
     };
   }
 
+  changeView(option) {
+    this.setState({
+      currentView: option
+    });
+  }
+
+  renderView() {
+    if (this.state.currentView === 'signup') {
+      return <Form server={this.props.server} type={this.state.currentView} />;
+    }
+  }
+
   render() {
-    return <Form player={this.state.currentPlayer} step={this.state.steps[this.state.currentStep]} />;
+    return (
+      <div>
+        <div className="nav">
+          <span className="logo" >
+            {/* onClick={() => this.changeView('home')}> */}
+            BATTLESHIP
+          </span>
+          <span className={this.state.view === 'feed' ? 'nav-selected' : 'nav-unselected'}
+            onClick={() => this.changeView('signup')}>
+            Signup
+          </span>
+        </div>
+        <div className="main">
+          {this.renderView()}
+        </div>
+      </div>
+    );
   }
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// eslint-disable-next-line import/extensions
 import App from './components/app.jsx';
+import Server from './server.js';
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render(<App server={Server} />, document.getElementById('app'));
